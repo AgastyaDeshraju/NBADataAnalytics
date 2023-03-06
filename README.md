@@ -242,6 +242,137 @@ TS\% = {{PTS}\over{(2*(FGA+0.44*FTA))}}
 
 * This code shows the aggregated for the regular season and the points field, this was done 5 more times to cover the playoffs as well as assists and rebounds per position.
 
+* After that, the tables for the regular season were joined and aggregated by position, taking averages of each player's stats. A view was created of this table to allow for easy access to the data later on.
+
+```sql
+GO
+CREATE VIEW POSITION_DISTRIBUTION AS
+SELECT 
+	P.Position, Round(Avg(P.PointsRS),2) as Average_Points_Position, Round(Avg(A.AssistsRS),2) as Average_Assists_Position, Round(Avg(R.ReboundsRS),2) as Average_Rebounds_Position
+FROM 
+	AggregatedPointsRS P
+LEFT JOIN AggregatedAssistsRS A
+ON P.Player_Id = A.Player_Id
+LEFT JOIN AggregatedReboundsRS R
+ON P.Player_Id = R.Player_Id
+GROUP BY 
+	P.Position
+
+SELECT * FROM POSITION_DISTRIBUTION
+```
+
+* Then, the data was aggregated by the year and the season type, to see if there are any changes in the 3 basic stats over the past 10 years.
+
+* The same aggregation was done but this time the data was grouped by the year and the season type
+
+* After that another view was created with this data.
+
+```sql
+GO
+CREATE VIEW SeasonDistributionStats AS
+SELECT P.Year, P.Season_Type, P.PointsPerYear, R.ReboundsPerYear, A.AssistsPerYear
+FROM PointsYears P
+LEFT JOIN AssistsYears A
+ON P.Year = A.Year AND P.Season_type = A.Season_type
+LEFT JOIN ReboundsYears R
+ON P.Year = R.Year AND P.Season_type = R.Season_type
+```
+
+* A view was created to observe the trend in the increase of 3 point attempts over the past 10 years
+
+
+```sql
+GO
+CREATE VIEW ThreePointTrendTeam AS
+SELECT
+	YEAR, TEAM, ROUND(SUM(THREEPFGM),1) AS ThreePointMade, ROUND(SUM(THREEPFGA),1) AS ThreePointAttempts, ROUND(AVG(THREEPFG_PCT), 2) AS ThreePointPercentage
+FROM
+	ThreePoint
+GROUP BY YEAR, TEAM;
+```
+
+
+* Using multiple CTEs (Common Table Expressions), I was able to calculate the number of 2 point field goal attempts and makes and joined this data along with free throw stats, grouping it by player and year.
+
+
+```sql
+GO
+CREATE VIEW ShotDistribution AS
+WITH 
+	FGS AS
+		(
+			SELECT P.PLAYER AS PLAYER, P.YEAR AS YEAR, ROUND(AVG(P.FGM),2) AS FGM, ROUND(AVG(P.FGA),2) AS FGA, ROUND(AVG(T.THREEPFGM),2) AS THREPFGM, ROUND(AVG(T.THREEPFGA),2) AS THREPFGA, ROUND(AVG(P.FGM-T.THREEPFGM),2) AS TWOPFGM, ROUND(AVG(P.FGA-T.THREEPFGA),2) AS TWOPFGA
+			FROM Points P
+			LEFT JOIN ThreePoint T ON P.Player_ID = T.PLAYER_ID
+			LEFT JOIN ThreePoint ON P.YEAR = T.YEAR
+			GROUP BY P.PLAYER, P.YEAR
+		),
+
+	FTS AS
+		(
+			SELECT PLAYER AS PLAYER, YEAR AS YEAR, ROUND(AVG(FTM),2) AS FTM, ROUND(AVG(FTA),2) AS FTA
+			FROM FreeThrows 
+			GROUP BY PLAYER, YEAR
+		)
+SELECT 
+	G.YEAR, ROUND(AVG(G.FGM),2) AS FGM, ROUND(AVG(G.FGA),2) AS FGA, ROUND(AVG(G.THREPFGM),2) AS FGM3, ROUND(AVG(G.THREPFGA),2) AS FGA3, ROUND(AVG(G.TWOPFGM),2) AS FGM2, ROUND(AVG(G.TWOPFGA),2) AS FGA2, ROUND(AVG(T.FTM),2) AS FTM, ROUND(AVG(T.FTA),2) AS FTAttempts,
+	(ROUND(AVG(G.FGM + T.FTM),2)) AS TotalMakes, (ROUND(AVG(G.FGA + T.FTA),2)) AS TotalAttempts
+FROM 
+	FGS G
+LEFT JOIN 
+	FTS T
+ON G.PLAYER = T.PLAYER
+GROUP BY 
+	G.YEAR;
+```
+
+
+* The last analysis relates to the efficienct of a player. CTEs were again used to join the dataset containing the True shooting percentage and the field goal  and free throw attempts of a player. The final view was created to store this data in an easily accessible way.
+
+```sql
+GO
+CREATE VIEW EfficiencyTable AS 
+WITH 
+	FGSFTS AS
+		(
+			SELECT P.PLAYER AS PLAYER, ROUND(AVG(P.FGM),2) AS FGM, ROUND(AVG(P.FGA),2) AS FGA, ROUND(AVG(T.FTM),2) AS FTM, ROUND(AVG(T.FTA),2) AS FTA, ROUND(AVG(P.FGM+T.FTM),2) AS SumOfMakes, ROUND(AVG(P.FGA+T.FTA),2) AS SumOfAttempts
+			FROM Points P
+			LEFT JOIN FreeThrows T ON P.Player_ID = T.PLAYER_ID
+			GROUP BY P.PLAYER
+		),
+	TSPER AS
+		(
+			SELECT PLAYER AS PLAYER, ROUND(AVG(EFF),2) AS EFF, ROUND(AVG(TSPER),2) AS TSPER
+			FROM Efficiency 
+			GROUP BY PLAYER
+		)
+	SELECT F.PLAYER, F.SumOfMakes, F.SumOfAttempts, T.EFF, T.TSPER
+	FROM FGSFTS F
+	LEFT JOIN TSPER T ON F.Player = T.Player;
+```
+
+* All the views created were then executed to copy the data onto Excel. This data was then fed into Tableau for visualization.
+
+
+```sql
+SELECT * FROM EfficiencyTable
+
+SELECT * FROM POSITION_DISTRIBUTION
+
+SELECT * FROM SeasonDistributionStats
+
+SELECT * FROM ShotDistribution
+
+SELECT * FROM ThreePointTrendPlayer
+
+SELECT * FROM ThreePointTrendTeam
+```
+
+
+## Data Visualization in Tableau
+
+All the data was then visualized on Tableau, and a dashboard was created [LINK](https://public.tableau.com/app/profile/agastya.deshraju/viz/NBADataAnalytics/Dashboard1)
+![image](https://user-images.githubusercontent.com/82213456/223018791-24dc4fb4-cb17-4310-9955-2491be99333c.png)
 
 
 
