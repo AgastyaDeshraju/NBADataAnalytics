@@ -209,6 +209,38 @@ TS\% = {{PTS}\over{(2*(FGA+0.44*FTA))}}
 ![image](https://user-images.githubusercontent.com/82213456/223014530-8ae746eb-58a0-4a89-8518-2561c1f8ef2a.png)
 
 
+- The final dataset contains the following fields
+  - **YEAR**: The year of the season
+  - **SEASON_TYPE**: Regular Season / Playoffs
+  - **PLAYER_ID**: The player's unique ID
+  - **RANK**: The data was scraped from the points leader statistics page for each year, the rank indicates each player's ranking in this leaderboard
+  - **PLAYER**: The player's name
+  - **TEAM_ID**: Each team's unique ID
+  - **TEAM**: Team name
+  - **POSITION**: Position at which each player played at
+  - **GP**: Games played by the player in that year
+  - **MIN**: Average minutes played by the player per game per season
+  - **FGM**: Average of field goals made by the player in that season
+  - **FGA**: Average of field goal attempts by the player in that season
+  - **FG_PCT**: Percentage of field goal makes by the player in that season
+  - **3PFGM**: Average of 3 point field goals made by the player in that season
+  - **3PFGA**: Average of 3 point field goal attempts by the player in that season
+  - **3PFG_PCT**: Percentage of 3 point field goal makes by the player in that season
+  - **FTM**: Average free throw makes by the player in that season
+  - **FTA**: Average free throw attempts by the player in that season
+  - **FT_PCT**: Percentage of free throw makes by the player in that season
+  - **OREB**: Average of offensive rebounds by the player in that season
+  - **DREB**: Average of defensive rebounds by the player in that season
+  - **REB**: Average of rebounds by the player in that season
+  - **AST**: Average of assists by the player in that season
+  - **STL**: Average of steals by the player in that season
+  - **BLK**: Average of blocks by the player in that season
+  - **TOV**: Average of turnovers by the player in that season
+  - **AST/TOV**: Assists to turnover ratio for the player in that season
+  - **EFF**: Effictiveness of the player for their team
+  - **TS%**: True shooting percentage of the player for the season calculated with the formula stated above
+
+
 ## Data Analysis using SQL
 
 * All the different tables from excel were imported into Microsoft SQL Server.
