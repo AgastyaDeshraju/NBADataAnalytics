@@ -1,5 +1,17 @@
 # Webscraping NBA Data and performing analysis
 
+### Table of contents
+
+[Introduction](#introduction)
+
+[Web Scraping](#web-scraping)
+
+[Data Cleaning in Excel](#data-cleaning-in-excel)
+
+[Data Analysis using SQL](#data-analysis-using-sql)
+
+[Data Visualization in Tableau](#data-visualization-in-tableau)
+
 ## Introduction
 
 The project is designed to scrape data from the official [NBA website](https://www.nba.com). Webscraping was performed using Python and Jupyter Notebooks. After scraping the initial data, there was a realization that the data on the NBA website did not contain the positions of each player. As that is a key metric that was used in the Data Analyis, a dataset with every player's name and position was found on Kaggle and mapped onto each players name using Pandas.
