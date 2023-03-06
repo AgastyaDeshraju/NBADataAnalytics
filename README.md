@@ -2,15 +2,11 @@
 
 ### Table of contents
 
-[Introduction](#introduction)
-
-[Web Scraping](#web-scraping)
-
-[Data Cleaning in Excel](#data-cleaning-in-excel)
-
-[Data Analysis using SQL](#data-analysis-using-sql)
-
-[Data Visualization in Tableau](#data-visualization-in-tableau)
+* [Introduction](#introduction)
+* [Web Scraping using Python](#web-scraping-using-python)
+* [Data Cleaning in Excel](#data-cleaning-in-excel)
+* [Data Analysis using SQL](#data-analysis-using-sql)
+* [Data Visualization in Tableau](#data-visualization-in-tableau)
 
 ## Introduction
 
@@ -25,7 +21,7 @@ TS\% = {{PTS}\over{(2*(FGA+0.44*FTA))}}
 The dataset was then split into different files. This was done to make the data analysis in SQL less complicated. Analysis was performed using a variety of SQL functions including JOINs, VIEWs, CTEs, Temp Tables, etc. VIEWs were created for certain analyses, that were then brought into Tableau to visualize the data. A publicly available [interactive dashboard](https://public.tableau.com/app/profile/agastya.deshraju/viz/NBADataAnalytics/Dashboard1) was then created.
 
 
-## Web Scraping
+## Web Scraping using Python
 
 The first step of the project was web scraping. The link to the jupyter notebook used to scrape the data is [this](https://github.com/AgastyaDeshraju/NBADataAnalytics/blob/main/NBA%20Player%20Data%20Web%20Scraping%20Code.ipynb) The data was scraped from the [stats](https://www.nba.com/stats) page of nba.com. The library used to perform the web scraping is ``` requests ```.
  
