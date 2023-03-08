@@ -411,9 +411,8 @@ SELECT * FROM ThreePointTrendTeam
 
 ## Data Visualization in Tableau
 
-All the data was then visualized on Tableau, and a dashboard was created [LINK](https://public.tableau.com/app/profile/agastya.deshraju/viz/NBADataAnalytics/Dashboard1)
-![image](https://user-images.githubusercontent.com/82213456/223018791-24dc4fb4-cb17-4310-9955-2491be99333c.png)
-
+* All the data was then visualized on Tableau, and a dashboard was created [LINK](https://public.tableau.com/app/profile/agastya.deshraju/viz/NBADataAnalytics/Dashboard1)
+![image](https://user-images.githubusercontent.com/82213456/223751763-15bc6759-0735-47d8-a470-92a2d732afb5.png)
 
 
 
